@@ -31,6 +31,15 @@ namespace Login_Register_Api
             //add token services 
             builder.Services.AddScoped<Token>();
 
+            //add cors policy 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", corsPolicyOptions =>
+                {
+                    corsPolicyOptions.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,7 +53,7 @@ namespace Login_Register_Api
 
             app.UseAuthorization();
             app.UseAuthentication();
-
+            app.UseCors("MyPolicy");
 
             app.MapControllers();
 
